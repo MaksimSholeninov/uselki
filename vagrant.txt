@@ -1,0 +1,122 @@
+vagrant
+
+установка
+sudo apt install vagrant
+проверяем
+Print the version and exit.
+vagrant -v
+vagrant --version                    
+Print this help.
+vagrant -h
+vagrant --help 
+
+удаление
+sudo apt remove vagrant
+
+Создать рабочую директорию
+- инициализация c базовым набором
+vagrant init
+
+- пример инициализации с убунтой
+vagrant init ubuntu/bionic64
+Будет создан файл Vagrantfile внутри папки
+
+Список образов https://app.vagrantup.com/boxes/search
+Надо скопировать описание 
+Например для ubuntu/xenial64 на странице https://app.vagrantup.com/ubuntu/boxes/xenial64
+берем описание и вставляем в файл конфига вагранта
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+end
+
+ubuntu - username
+xenial64 - box
+
+Можно определить загрузку определенной версии образа. Если такой версии не найдется, выдаст ошибку.
+config.vm.box_version = "1.0.282"
+
+Можно указать путь откуда скачивать образ
+config.vm.box_url = "https://vagrantcloud.com/hashicorp/bionic64"
+
+-------------------------
+Параметры сборки
+
+указываем название образа - берем с сайта
+config.vm.box = "ubuntu/trusty64"
+
+По-умолчания, vagrant перед каждым запуском образа проверяет репозиторий на наличие обновлений. Это занимает какое-то время и не особо нам нужно, так как используем LTS версию.
+config.vm.box_check_update = false
+
+имя используемое в провайдере для обозначения. 
+config.vm.define "testing2" 
+
+указать ip 
+config.vm.network "public_network", ip: "192.168.1.100"
+взять ip динамически
+config.vm.network "private_network", type: "dhcp"
+
+параметры видео интерфейса
+  config.vm.provider "virtualbox" do |vb|
+     vb.gui = false - без графического интерфейса
+     vb.memory = "1024" - выделено памяти
+  end 
+
+config.vm.network  "forwarded_port", guest: 8080, host: 9898, host_ip: 127.0.0.1
+
+Если нам требуется пробросить несколько портов, то просто задаём две строки в Vagrantfile:
+
+config.vm.network  "forwarded_port", guest: 80, host: 9999
+config.vm.network  "forwarded_port", guest: 8080, host: 9898
+
+---------------
+Запуск сборки
+vagrant up
+- с просмотром процесса сборки
+vagrant up --debug
+
+Подключиться к машине
+vagrant ssh
+Отключится - команда logout
+Так же можно отключиться командой exit
+
+
+Выключить виртуальную машину. Надо запускать из той папки где находится файл конфигурации
+vagrant halt
+
+Удалить 
+vagrant destroy
+удалить без подтверждения
+vagrant destroy -f
+
+
+Приостановить работу машины - отправляет машину в сон. Состояние будет закешировано. 
+vagrant suspend
+
+Вернуть из сна
+vagrant resume
+
+просмотреть список боксов
+vagrant box list
+Удаление из кеша бокса. Когда выполняется up происходит скачиывание бокса. После команды remove произойдет удаление
+vagrant box remove hashicorp/bionic64
+
+вернёт список машин, вместе с состоянием и с дирекорией, в которой размещён Vagrantfile
+vagrant global-status
+
+Просмотреть порты используемые вагрантом
+vagrant port
+
+Перезагрузить виртуальную машину
+vagrant reload
+
+
+Автоматический проброс порта для ssh (хост - 2222, гость - 22);
+
+Share
+vagrant plugin install vagrant-share
+
+
+источники
+https://infoit.com.ua/linux/ubuntu/nastroit-vagrant-na-ubuntu-20-04-18-04/
+https://help.ubuntu.ru/wiki/vagrant
