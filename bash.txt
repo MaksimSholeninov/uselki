@@ -1,0 +1,54 @@
+  if [ что-то тут ]
+ then
+ 
+ if [ -d "/path/to/directory" ]; then
+  echo "Каталог существует."
+else
+  echo "Каталог не существует."
+fi
+
+if [ -w "/path/to/file_or_directory" ]; then
+  echo "Права на запись есть."
+else
+  echo "Права на запись отсутствуют."
+fi
+
+ if [ -f "/path/to/directory" ]; then
+  echo "файд существует."
+else
+  echo "файла не существует."
+fi
+
+
+exit 1 - не правильное завершение файла 
+
+#!/bin/bash - обезательный файл в начале
+
+#!/bin/bash
+
+# Определяем источник и целевой каталог для бекапа
+source_dir="/path/to/source"
+backup_dir="/path/to/backup"
+
+# Создаем каталог для бекапа, если он не существует
+mkdir -p "$backup_dir"
+
+# Копируем содержимое источника в каталог бекапа
+cp -r "$source_dir" "$backup_dir"
+
+# Проверяем успешность операции копирования
+if [ $? -eq 0 ]; then
+  echo "Бекап успешно создан в $backup_dir"
+else
+  echo "Ошибка при создании бекапа"
+  exit 1
+fi
+
+почему сdgroup команды не работают
+
+&& - и 
+|| - или
+! - нет
+
+
+
