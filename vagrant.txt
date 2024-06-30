@@ -1,6 +1,7 @@
 vagrant
 
 установка
+
 sudo apt install vagrant
 проверяем
 Print the version and exit.
