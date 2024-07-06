@@ -115,8 +115,8 @@ vagrant reload
 Автоматический проброс порта для ssh (хост - 2222, гость - 22);
 
 Share
+# Пока ничего не понятно
 vagrant plugin install vagrant-share
-
 
 источники
 https://infoit.com.ua/linux/ubuntu/nastroit-vagrant-na-ubuntu-20-04-18-04/
