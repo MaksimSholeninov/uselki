@@ -121,3 +121,17 @@ vagrant plugin install vagrant-share
 источники
 https://infoit.com.ua/linux/ubuntu/nastroit-vagrant-na-ubuntu-20-04-18-04/
 https://help.ubuntu.ru/wiki/vagrant
+
+curl
+
+subrunt vagrant
+
+командира нам не надо, командовать парадом буду я
+
+фигма
+
+скам 
+
+джайл 
+
+кантбант
