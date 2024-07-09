@@ -216,3 +216,27 @@ vagrant plugin install vagrant-parallels
 -----------------------------------------------
 https://infoit.com.ua/linux/ubuntu/nastroit-vagrant-na-ubuntu-20-04-18-04/
 https://help.ubuntu.ru/wiki/vagrant
+
+
+Пример
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = false
+
+  config.vm.hostname = "ubuntu"
+  config.vm.network "public_network", ip: "192.168.1.100"
+  config.vm.define "ubuntu-trusty"
+  config.vm.synced_folder "../", "/vagrant_data"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.provider "virtualbox" do |vb|
+     vb.name = "Ubuntu-trusty"
+     vb.gui = false
+     vb.cpus = 1
+     vb.memory = "1024"
+  end
+end 
