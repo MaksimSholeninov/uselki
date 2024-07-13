@@ -57,7 +57,8 @@ config.vm.box_check_update = false
 имя используемое в провайдере для обозначения. Может быть любым.
 config.vm.define "testing2" 
 
-указать ip 
+указать ip
+-----------
 config.vm.network "public_network", ip: "192.168.1.100"
 взять ip динамически
 config.vm.network "private_network", type: "dhcp"
@@ -74,7 +75,16 @@ config.vm.network "private_network", type: "dhcp"
      vb.cpus = 1
   end 
 
-config.vm.network  "forwarded_port", guest: 8080, host: 9898, host_ip: 127.0.0.1
+перенаправяление
+----------------
+перенаправлять с порта виртуальной машины (guest) на внешнюю (host)
+например, перенаправляем с порта 80 на порт 8080
+config.vm.network "forwarded_port", guest: 80, host: 8080
+если на внешней машине ввести в браузере localhost:8080 это будет тоже самое что запустить на виртуальной машине curl localhost:80
+или можно в командной строке виртуальной машины
+curl localhost:80
+тоже самое что на реальной машине в командной строке
+curl localhost:8080
 
 Если нам требуется пробросить несколько портов, то просто задаём две строки в Vagrantfile:
 
@@ -126,13 +136,26 @@ vagrant halt
 
 ---------------------------------------------
 
-Удалить 
+Удалить - destroy
 
 vagrant destroy [hostname]
 hostname - имя хоста (указывается в config.vm.hostname = "testing1"). Если только одна машина то hostname указывать не надо.
 
 удалить без подтверждения
 vagrant destroy -f
+
+Можно удалить по id
+Выдаем список виртуальных машин 
+vagrant global-status
+получаем список и удаляем по id
+id       name          provider   state   directory                           
+------------------------------------------------------------------------------
+cac8fae  ubuntu-trusty virtualbox running /home/sholeninov/Downloads/vagrant 
+
+vagrant destroy cac8fae
+
+Можно удалять списком id
+vagrant destroy id1 id2
 -----------------------------------------------
 
 Приостановить работу машины - отправляет машину в сон. Состояние будет закешировано. 
@@ -210,13 +233,15 @@ vagrant port
 ----------------------------------------------
 Provision
 ----------
-Provisioners in Vagrant allow you to automatically install software, alter configurations, and more on the machine as part of the vagrant up process.
+Обеспечивает предустановку программы на виртуальный сервер
 
 Запускается после первого up. Чтобы запустился после, надо 
 либо запустить специально команду
 vagrant provision
 или
 vagrant reload --provision 
+или если надо запустить по имени
+vagrant provision --provision-with bootstrap 
 
 Пример 1 - добавляем установка запустит вывод "echo hello"
 config.vm.provision "shell", inline: "echo hello"
@@ -232,8 +257,26 @@ end
 
   config.vm.provision "shell" do |s|
     s.inline = "sudo apt-get update"
-    s.inline = "sudo apt-get install -y apache2"  
+    s.inline = "sudo apt-get install -y apache2"    
   end
+
+В конфиге может быть несколько провиженов. Запускаются по очереди.
+  config.vm.provision "shell", inline: "echo foo"
+  config.vm.define "web" do |web|
+    web.vm.provision "shell", inline: "echo bar"
+  end
+  config.vm.provision "shell", inline: "echo baz"
+
+Именованый
+-----------
+Задаем имя provision - в примере "bootstrap". После имени через запятую тип "shell"
+config.vm.provision "bootstrap", type: "shell" do |s|
+    s.inline = "echo hello"
+end
+Именованный provision позволяет запустить определенный provision если их несколько.
+vagrant provision --provision-with bootstrap
+
+
 -----------------------------------------------
 Плагины plugins
 -----------------------------------------------
@@ -272,7 +315,7 @@ https://help.ubuntu.ru/wiki/vagrant
 6. установить на виртуальной машине apach. Проверить работоспособность.
 7. Выйти. Дать команды из вне для проверки. Т.е. важно не запускать виртуальную машину.
 - есть ли апач на сервере. 
-- получить список файлов на виртуальной машине ю
+- получить список файлов на виртуальной машине
 8. Получить список текущих боксов. 
    Установить дополнительный бокс, любой взять с сайта
    Найти на компе где именно хранятся боксы.
