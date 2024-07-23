@@ -120,3 +120,15 @@ a2s
 		
 		
 весь ip адресс занимает 4 биты
+
+git config --global user.name 'Sholeninov' - чтобы дать себе имя в git
+
+git config --list --show-origin
+git commit -a -m 
+
+а вот этот чувак он делал git clone без точки в конце 
+
+
+
+
+
