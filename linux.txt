@@ -210,6 +210,24 @@ cd / - перекинуть в самый корень
 
 pwd - чтобы посмотреть папку где находишься 
 
+wget - нужен для того чтобы скачать файл
 
+чтобы скачать несколько файлов через wget, нужно использовать bash    -     wget -i example.txt чтобы взять все из текстового файла
 
+wget -O wordpress-install.zip https://wordpress.org/latest.zip     - чтобы изменить название скачиваемого файла (новое название после команды -О
 
+wget -P documents/archives/ https://wordpress.org/latest.zip - чтобы сохранить в специальный каталог
+
+wget --limit-rate=500k https://wordpress.org/latest.zip - чтобы ограничить скорость скачивания файла
+
+wget -tries=100 https://wordpress.org/latest.zip - чтобы выставить попытки скачивания файла
+
+wget -b http://example.com/beefy-file.tar.gz - чтобы файл скачивался в фоновом режиме
+
+wget --ftp-user=YOUR_USERNAME --ftp-password=YOUR_PASSWORD ftp://example.com/something.tar - чтобы скачивать файл с раширением ftp
+
+wget -c https://example/very-big-file.zip - чтобы продолжить прерваное скачивание
+
+wget -o wget-log -r -l 5 --spider http://example.com - для поиска битых ссылок
+
+wget http://example.com/images/{1..50}.jpg - чтобы скачать пронумерованый файл
