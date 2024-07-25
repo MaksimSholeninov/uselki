@@ -62,6 +62,10 @@ config.vm.define "testing2"
 config.vm.network "public_network", ip: "192.168.1.100"
 взять ip динамически
 config.vm.network "private_network", type: "dhcp"
+задать ip статично 
+config.vm.network "private_network", ip: "192.168.56.4" 
+возможны ограничения на определенные ip, наприммер виртуалбокс создает ограничения
+
 
 параметры видео интерфейса
   config.vm.provider "virtualbox" do |vb|
@@ -296,7 +300,7 @@ https://help.ubuntu.ru/wiki/vagrant
 
 
 на вагранте
-1. установить систему на основе ubunto 1
+1. установить систему на основе ubunto
 2. настроить в конфигурации на виртуалбокс, 
 - поставить память 1024
 - дать нормальное имя серверу 
@@ -348,15 +352,3 @@ Vagrant.configure("2") do |config|
      vb.memory = "1024"
   end
 end 
-
-сделать задание из 10 пунктов вверху
-free -m - проверка памяти 
-nproc - проверка количества ядер
-hostname - проверка имени хоста
-VBoxControl --version - Проверка обновлений гостевых дополнений VirtualBox
-
-sudo lsof -i:80
-systemctl status apache2 - чтобы проверить состояние apache2 на виртуальной машине находясь на хосте
-vagrant box list - чтобы вывести список всех боксов или операционнок которые установлены для виртуальной машины 
-vagrant box add ubuntu/focal64 - чтобы добавить дополнительный бокс или операционную систему для виртуальной машины 
-
