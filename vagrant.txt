@@ -59,13 +59,16 @@ config.vm.define "testing2"
 
 указать ip
 -----------
+public_network - это ip который будет использован как внешний. Т.е. виртуальная машина будет использовать внешний ip чтобы стучаться наружу за интернетом.
 config.vm.network "public_network", ip: "192.168.1.100"
+
 взять ip динамически
 config.vm.network "private_network", type: "dhcp"
-задать ip статично 
+задать ip статично. Этот ip адрес будет присвоен виртуальной машине и будет считаться что комп имеет этот ip адрес.
 config.vm.network "private_network", ip: "192.168.56.4" 
 возможны ограничения на определенные ip, наприммер виртуалбокс создает ограничения
-
+Этот ip адрес можно потому протестировать с помощью 
+ip -br a
 
 параметры видео интерфейса
   config.vm.provider "virtualbox" do |vb|
@@ -264,6 +267,27 @@ end
     s.inline = "sudo apt-get install -y apache2"    
   end
 
+Пример 4 - записываем через SHELL - script
+
+  $script = <<-SCRIPT
+    echo Start provision
+    sudo apt-get update
+
+    echo --- Install nginx ---
+    sudo apt-get install -y nginx
+  SCRIPT
+
+  config.vm.provision "shell", inline: $script
+---------
+
+!!! Важно - необходимо использовать apt-get вместое apt, так как apt вываливает ошибки, он не предназначен для работы в скрипте.
+
+!!! Важное отличие между записью inline формата и SHELL-script - когда записываем через inline вагрант предварительно определяет зависимости и потом запускает установку самостоятельно без предварительных apt-get
+Когда запускаем через SHELL-script вагрант выполняет все так как мы это делаем руками.
+Приоритетно и будет меньше ошибок если использовать SHELL-script
+
+
+
 В конфиге может быть несколько провиженов. Запускаются по очереди.
   config.vm.provision "shell", inline: "echo foo"
   config.vm.define "web" do |web|
@@ -279,7 +303,6 @@ config.vm.provision "bootstrap", type: "shell" do |s|
 end
 Именованный provision позволяет запустить определенный provision если их несколько.
 vagrant provision --provision-with bootstrap
-
 
 -----------------------------------------------
 Плагины plugins
